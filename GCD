@@ -1,0 +1,31 @@
+#include <stdio.h>
+
+// Function to find the minimum of two numbers
+int min(int a, int b) {
+    return (a < b) ? a : b;
+}
+
+// Function to find the greatest common divisor (GCD) using recursive factorization
+int gcd_recursive(int a, int b, int divisor) {
+    if (divisor == 1) // Base case: if divisor reaches 1, return 1
+        return 1;
+    if (a % divisor == 0 && b % divisor == 0) // Check if divisor divides both numbers
+        return divisor;
+    return gcd_recursive(a, b, divisor - 1); // Recursive call with the next divisor
+}
+
+// Function to find the GCD of two numbers
+int gcd(int a, int b) {
+    int minimum = min(a, b);
+    return gcd_recursive(a, b, minimum);
+}
+
+int main() {
+    int num1, num2;
+    printf("Enter two numbers: ");
+    scanf("%d %d", &num1, &num2);
+
+    printf("GCD of %d and %d is %d\n", num1, num2, gcd(num1, num2));
+
+    return 0;
+}
