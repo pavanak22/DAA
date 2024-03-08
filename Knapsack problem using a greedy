@@ -1,0 +1,54 @@
+#include <stdio.h>
+
+// Structure to represent each item
+struct Item {
+    int weight;
+    int value;
+};
+
+// Function to perform Knapsack problem using a greedy approach
+void knapsackGreedy(struct Item items[], int n, int capacity) {
+    // Sort items based on value per unit weight (value/weight ratio)
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            double ratio1 = (double)items[i].value / items[i].weight;
+            double ratio2 = (double)items[j].value / items[j].weight;
+            if (ratio1 < ratio2) {
+                struct Item temp = items[i];
+                items[i] = items[j];
+                items[j] = temp;
+            }
+        }
+    }
+
+    int totalWeight = 0;
+    double totalValue = 0.0;
+
+    printf("Selected items:\n");
+    for (int i = 0; i < n; i++) {
+        if (totalWeight + items[i].weight <= capacity) {
+            printf("Item with weight %d and value %d\n", items[i].weight, items[i].value);
+            totalWeight += items[i].weight;
+            totalValue += items[i].value;
+        } else {
+            double remainingWeight = capacity - totalWeight;
+            totalValue += items[i].value * (remainingWeight / items[i].weight);
+            break;
+        }
+    }
+
+    printf("Total weight: %d\n", totalWeight);
+    printf("Total value: %.2lf\n", totalValue);
+}
+
+int main() {
+    // Example items
+    struct Item items[] = {{10, 60}, {20, 100}, {30, 120}};
+    int n = sizeof(items) / sizeof(items[0]);
+    int capacity = 50;
+
+    printf("Knapsack problem using greedy technique:\n");
+    knapsackGreedy(items, n, capacity);
+
+    return 0;
+}
